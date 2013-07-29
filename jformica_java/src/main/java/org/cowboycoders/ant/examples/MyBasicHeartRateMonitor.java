@@ -59,6 +59,8 @@ public class MyBasicHeartRateMonitor {
     private static final int HRM_DEVICE_ID1 = 60626;
     private static final int HRM_DEVICE_ID2 = 19186;
 
+    public static final String NETWORK_NAME = "N:ANT+";
+    private static final int[] NETWORK_KEY = new int[] {0xB9, 0xA5, 0x21, 0xFB, 0xBD, 0x72, 0xC3, 0x45};
 
     public static final Level LOG_LEVEL = Level.SEVERE;
 
@@ -129,18 +131,19 @@ public class MyBasicHeartRateMonitor {
         Node node = new Node(antchip);
 
         // ANT+ key
-        NetworkKey key = new NetworkKey(0xB9, 0xA5, 0x21, 0xFB, 0xBD, 0x72, 0xC3, 0x45);
-        key.setName("N:ANT+");
+        NetworkKey key = new NetworkKey(NETWORK_NAME, NETWORK_KEY);
 
         node.start();
         node.reset();
         System.out.println("MaxNetworks: " + node.getMaxNetworks());
         System.out.println("MaxChannels: " + node.getMaxChannels());
 
-        node.setNetworkKey(0, key);
+        node.setNetworkKey(1, key);
 
-        createChannel(node, HRM_DEVICE_ID);
-//        createChannel(node, HRM_DEVICE_ID1);
+        Channel channel;
+        while ((channel = createChannel(node, HRM_DEVICE_ID, NETWORK_NAME)) != null) {
+            System.out.println("Channel " + channel.getName() + ": " + channel.getNumber());
+        }
 
         Thread.sleep(10000);
 
@@ -152,34 +155,34 @@ public class MyBasicHeartRateMonitor {
 
     private static List<Channel> channels = new ArrayList<Channel>();
 
-    private static Channel createChannel(Node node, int hrmDeviceId) {
+    private static Channel createChannel(Node node, int hrmDeviceId, String netKeyName) {
         Channel channel = node.getFreeChannel();
 
-        channel.setName("C:HRM:" + hrmDeviceId);
+        if (channel != null) {
+            channel.setName("C:HRM:" + hrmDeviceId);
 
-        channel.assign("N:ANT+", new SlaveChannelType(false, true));
+            channel.assign(netKeyName, new SlaveChannelType());
 
-        channel.registerRxListener(new Listener1(), BroadcastDataMessage.class);
-        channel.registerRxListener(new ChannelAssignListener(), ChannelAssignMessage.class);
+            channel.registerRxListener(new Listener1(), BroadcastDataMessage.class);
+            channel.registerRxListener(new ChannelAssignListener(), ChannelAssignMessage.class);
 
-        /******* start device specific configuration ******/
-        channel.setId(hrmDeviceId, HRM_DEVICE_TYPE, HRM_TRANSMISSION_TYPE, HRM_PAIRING_FLAG);
-        channel.setFrequency(HRM_CHANNEL_FREQ);
-        channel.setPeriod(HRM_CHANNEL_PERIOD);
-        /******* end device specific configuration ******/
+            /******* start device specific configuration ******/
+            channel.setId(hrmDeviceId, HRM_DEVICE_TYPE, HRM_TRANSMISSION_TYPE, HRM_PAIRING_FLAG);
+            channel.setFrequency(HRM_CHANNEL_FREQ);
+            channel.setPeriod(HRM_CHANNEL_PERIOD);
+            /******* end device specific configuration ******/
 
-        channel.setSearchTimeout(Channel.SEARCH_TIMEOUT_NEVER);
+            channel.setSearchTimeout(Channel.SEARCH_TIMEOUT_NEVER);
 
-        channel.open();
+            channel.open();
 
-        System.out.println("Channel " + channel.getName() + ": " + channel.getNumber());
-
-        channels.add(channel);
+            channels.add(channel);
+        }
         return channel;
     }
 
     private static void closeChannels(Node node) {
-        for(Channel channel: channels) {
+        for (Channel channel : channels) {
             closeChannel(node, channel);
         }
     }
