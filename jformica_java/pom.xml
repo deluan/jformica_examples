@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.deluan</groupId>
-	<version>0.0.1.SNAPSHOT</version>
-	<artifactId>jformica_java</artifactId>
+    <groupId>com.deluan</groupId>
+    <version>0.0.1.SNAPSHOT</version>
+    <artifactId>jformica_java</artifactId>
 
     <repositories>
         <repository>
@@ -14,21 +14,31 @@
         </repository>
     </repositories>
 
-	<dependencies>
+    <properties>
+        <jformica_version>0.0.5-SNAPSHOT</jformica_version>
+    </properties>
+
+    <dependencies>
         <dependency>
             <groupId>JFormica</groupId>
             <artifactId>jformica_core</artifactId>
-            <version>0.0.4</version>
+            <version>${jformica_version}</version>
         </dependency>
         <dependency>
             <groupId>JFormica</groupId>
             <artifactId>jformica_jsr80</artifactId>
-            <version>0.0.4</version>
+            <version>${jformica_version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.usb</groupId>
+            <artifactId>usb-api</artifactId>
+            <version>1.0.2</version>
         </dependency>
         <dependency>
             <groupId>de.ailis.usb4java</groupId>
             <artifactId>usb4java</artifactId>
             <version>1.0.0</version>
+            <scope>runtime</scope>
         </dependency>
     </dependencies>
 
