@@ -1,2 +1,6 @@
 **/bin
 **/.settings
+.DS_Store
+*.iml
+.idea
+*.iws

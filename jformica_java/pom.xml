@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.deluan</groupId>
+	<version>0.0.1.SNAPSHOT</version>
+	<artifactId>jformica_java</artifactId>
+
+    <repositories>
+        <repository>
+            <id>ailis</id>
+            <name>Ailis Maven Repository</name>
+            <url>http://nexus.ailis.de/content/groups/public/</url>
+        </repository>
+    </repositories>
+
+	<dependencies>
+        <dependency>
+            <groupId>JFormica</groupId>
+            <artifactId>jformica_core</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>JFormica</groupId>
+            <artifactId>jformica_jsr80</artifactId>
+            <version>0.0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>de.ailis.usb4java</groupId>
+            <artifactId>usb4java</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+    </dependencies>
+
+</project>
